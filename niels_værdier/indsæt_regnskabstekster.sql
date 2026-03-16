@@ -1,14 +1,16 @@
+begin transaction
+insert into
+    [Bolig].[dbo].[Regnskabstekster] (Sel, Afd, Nr, Teksttype, Tekstmark, Tekst)
 SELECT
-    x.sel,
+    distinct x.sel,
     x.afd,
-    x.SAtype,
     x.Nr,
     x.Teksttype,
-    x.Navn,
     case
         when rn.value = 1 then 1
         else 0
-    end as Værdi
+    end as Værdi,
+    NULL
 FROM
     (
         SELECT
@@ -38,7 +40,4 @@ FROM
     and x.afd = rn.afd
     and x.navn = rn.tekst
 where
-    x.sel > 100
-order by
-    x.sel,
-    x.afd
+    x.sel > 100 commit
